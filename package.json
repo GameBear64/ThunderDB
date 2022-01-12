@@ -1,0 +1,79 @@
+{
+  "_from": "stormdb",
+  "_id": "stormdb@0.5.2",
+  "_inBundle": false,
+  "_integrity": "sha512-qvjjceJnt95CkIr8e/mhSqFxw/b787vRKDysQ7P6hmXyavROiw6X3A6li4AoF2QXL/xrwA0hdajCtuiu2WGe6g==",
+  "_location": "/stormdb",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "stormdb",
+    "name": "stormdb",
+    "escapedName": "stormdb",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/stormdb/-/stormdb-0.5.2.tgz",
+  "_shasum": "7b617ace747d54fab3cc7f2b3498f139b1464bfa",
+  "_spec": "stormdb",
+  "_where": "D:\\Desktop\\File Portal\\Dev\\JS\\projects-apps\\Games\\rps",
+  "author": {
+    "name": "Tom"
+  },
+  "bugs": {
+    "url": "https://github.com/TomPrograms/stormdb/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "StormDB is a tiny, lightweight, 0 dependency, easy-to-use JSON-based database for NodeJS, the browser or Electron.",
+  "devDependencies": {
+    "coveralls": "^3.0.9",
+    "mocha": "^7.1.0",
+    "nyc": "^15.0.0",
+    "prettier": "^1.19.1",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "src/",
+    "dist/",
+    "Readme.md",
+    "Changelog.md",
+    "LICENSE"
+  ],
+  "homepage": "https://github.com/TomPrograms/stormdb#readme",
+  "keywords": [
+    "database",
+    "JSON",
+    "file",
+    "embed",
+    "embeddable",
+    "localStorage",
+    "node",
+    "browser",
+    "electron"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "stormdb",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TomPrograms/stormdb.git"
+  },
+  "scripts": {
+    "build": "webpack --config .webpack.config.js",
+    "format": "prettier --write {**,**/**}/*.{js,md}",
+    "prepublishOnly": "npm run build",
+    "test": "mocha ./tests --recursive --exit"
+  },
+  "types": "index.d.ts",
+  "version": "0.5.2"
+}
