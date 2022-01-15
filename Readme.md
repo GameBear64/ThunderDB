@@ -1,38 +1,86 @@
 # ThunderDB
 **StormDB** creator [Tom](https://github.com/TomPrograms) and [GitHub](https://github.com/TomPrograms/stormdb)
 
-This is a modified **StormDB**.
-I needed something like storm but not quite so here is thunder.
+This is a modified version of **StormDB**.
+I needed something similar to it, but not quite the same, so here is Thunder.
 
-**Not everything is tested, either help out or wait for me to discover bugs.**
+**Not everything is tested - either help out or wait for me to discover bugs.**
 
 **Table of Content**
+-
+- [ThunderDB](#thunderdb)
+  * [Instalation](#instalation)
+  * [Usage](#usage)
+  * [Database Operations](#database-operations)
+    + [Core operations](#core-operations)
+      - [.default(defaultValue)](#default-defaultvalue-)
+      - [.value()](#value--)
+      - [.get(value)](#get-value-)
+      - [.set(key, value)](#set-key--value-)
+      - [.rename(newName)](#rename-newname-)
+      - [.delete()](#delete--)
+      - [.read()](#read--)
+      - [.save()](#save--)
+    + [String operations](#string-operations)
+      - [.toLowerCase()](#tolowercase--)
+      - [.toUpperCase()](#touppercase--)
+      - [.toString(method, save)](#tostring-method--save-)
+      - [.trim()](#trim--)
+      - [.replace(oldStr, newStr)](#replace-oldstr--newstr-)
+      - [.reverse(save)](#reverse-save-)
+    + [Number Operations](#number-operations)
+      - [.inc()](#inc--)
+      - [.dec()](#dec--)
+      - [.add(number)](#add-number-)
+      - [.sub(number)](#sub-number-)
+      - [.addRandom(max, min)](#addrandom-max--min-)
+      - [.subRandom(max, min)](#subrandom-max--min-)
+    + [Array Operations](#array-operations)
+      - [.push(...value)](#push-value-)
+      - [.pushSet(...value)](#pushset-value-)
+      - [.pull({getList, save})](#pull--getlist--save--)
+      - [.shift({getList, save})](#shift--getlist--save--)
+      - [.unshift(...value)](#unshift-value-)
+      - [.every(func)](#every-func-)
+      - [.some(func)](#some-func-)
+      - [.has(value)](#has-value-)
+      - [.map(func, save)](#map-func--save-)
+      - [.sort(func, save)](#sort-func--save-)
+      - [.filter(func, save)](#filter-func--save-)
+      - [.reduce(func, save)](#reduce-func--save-)
+      - [.length()](#length--)
+    + [Object Operations](#object-operations)
+      - [.concat(newValue)](#concat-newvalue-)
+  * [Async Saving](#async-saving)
+  * [What and Why](#what-and-why)
+      - [Changes](#changes)
+      - [Disguarded ideas](#disguarded-ideas)
+      - [Why?](#why-)
+- [Links, Credit and License](#links--credit-and-license)
 
-[TOC]
-
-## Instalation
-**Im not posting this to npm so just copy and paste the files here into your *node_modules*  folder.**
+## Installation
+**I'm not posting this to npm, so just copy and paste the files here into your *node_modules*  folder.**
 
 You can also just install StormDB: `npm i stormdb`
 Then go into your *node_modules* folder, find *stormdb* and replace the files with the ones here.
 
 ## Usage
-Simular to **StormDB**, thunder just adds on top of storm.
+Similar to **StormDB**, Thunder just adds on top of Storm.
 
 ```js
 const StormDB = require("stormdb");
 
-// starting the db
+//starting the db
 const engine = new StormDB.Engine("./data.json");
 const db = new StormDB(engine)
 
-// set default db value if db it's empty
+//set default db value if db is empty
 db.default({ users: [] });
 
-// add new users entry
+//add new users entry
 db.get("users").push({ name: "tom" });
 
-// update username of first user
+//update username of first user
 db.get("users")
   .get(0)
   .get("name")
@@ -45,7 +93,7 @@ db.get("users").get(1).reverse()
 //see how many entries
 console.log(db.get("users").length()) //prints out "2"
 
-// save changes to db
+//save changes to db
 db.save();
 ```
 
@@ -61,7 +109,7 @@ The `data.json` database file is updated to:
 ```
 
 ## Database Operations
-I have devided these operations into **5 groups** for easier management.
+I have divided these operations into **5 groups** for easier management.
 
 ### Core operations
 ---
@@ -79,19 +127,19 @@ If there is nothing in the database this will put something in it.
 DB.default({ users: [] });
 //after: { "users": [] }
 ```
-*File was not empty, default ignored:*
+*File was not empty, default value ignored:*
 ```js
-//before: {books : {"HarryPoter" : "very big book"}}
+//before: {books : {"Harry Potter" : "very big book"}}
 DB.default({ users: [] });
-//after: {books : {"HarryPoter" : "very big book"}}
+//after: {books : {"Harry Potter" : "very big book"}}
 ```
 
 ---
 #### .value()
-Return raw value of a selected property
+Return the raw value of a selected property.
 
 **Example:**  
-*Getting value from "name":*
+*Getting a value from "name":*
 ```js
 //in db: {"name": "Gam", "age": 19, "hobby": "Video games"}
 DB.get("name").value()
@@ -108,19 +156,19 @@ You will use this a lot.
 | value | string | No |
 
 **Examples:**  
-*Seting new value to "name":*
+*Setting a new value to "name":*
 ```js
 //before: {"name" : "Tom"}
 DB.get("name").set("Gam")
 //after: {"name": "Gam"}
 ```
-*Getting value from "name":*
+*Getting the value from "name":*
 ```js
 //in db: {"name": "Gam", "age": 19, "hobby": "Video games"}
 DB.get("name").value()
 //returns "Gam"
 ```
-*Get second element of array:*
+*Get the second element of an array:*
 ```js
 //before: {"cake": ["Milk Bucket", "Sugar", "Egg", "Wheat"]}
 DB.get("name").get(2).value()
@@ -135,7 +183,7 @@ DB.get("details.age").value()
 
 ---
 #### .set(key, value)
-Set a key-value pair on selected property or change an existing property.
+Set a key-value pair on a selected property or change an existing property.
 
 | Parameter  | Type | Optional | Default |
 | :-----------: | :----: | :--------: | :-------: |
@@ -143,7 +191,7 @@ Set a key-value pair on selected property or change an existing property.
 | value | string | No | none |
 
 **Examples:**  
-*Updating a vlaue:*
+*Updating a value:*
 ```js
 //before: {"name" : "Tom"}
 DB.get("name").set("Gam")
@@ -170,11 +218,11 @@ Allows you to change the name of a property.
 | :-----------: | :----: | :--------: |
 | newName | string | No |
 
-**After you change the name of a property the path might become invalid dpening on your code**.  
-*If **oldName** is the same as **newName** it will just be ignored* :)
+**After you change the name of a property the path might become invalid depending on your code.**  
+*If **oldName** is the same as **newName**, it will just be ignored.* :)
 
 **Examples:**  
-*If this runs more than once it will throw an error since `.get("a")` becomes invalid the second time*
+*If this runs more than once it will throw an error, since `.get("a")` becomes invalid the second time.*
 ```js
 //before: {"name" : "Gam"}
 DB.get("name").rename("firstName")
@@ -187,7 +235,7 @@ let oldUserID = "TOM#1234"
 let newUserID = "GAM#6498"
 
 //before: {"TOM#1234": ["Hero sword", "Magic chestplate", "Healing potion"]}
-DB.get(newUserID).rename(newUserID)
+DB.get(oldUserID).rename(newUserID)
 //after: {"GAM#6498": ["Hero sword", "Magic chestplate", "Healing potion"]}
 ```
 
@@ -202,7 +250,7 @@ Deletes key-value pair or item in array.
 DB.get("age").delete();
 // after:  {"name": "Gam", "hobby": "Video games"}
 ```
-*Delete item in array*
+*Delete item in array:*
 ```js
 //before: {"cake": ["Milk Bucket", "Sugar", "Egg", "Wheat"]}
 DB.get("cake").get(0).delete()
@@ -212,27 +260,27 @@ DB.get("cake").get(0).delete()
 ---
 #### .read()
 Read/refresh the data from the database.  
-StormDB works with a copy of the orignial data, if changes happen to the original db storm woudn't know, use this to ensure your data is fresh.  
+StormDB works with a copy of the orignial data - if changes happen to the original db, Storm woudn't know - use this to ensure your data is fresh.  
 
-*In some cases you have multible users changing something, run this before making changes so you don't get data conflicts.*
+*In some cases you have multiple users changing something. Run this before making changes, so you don't get data conflicts.*
 
 **Example:**
 ```js
 DB.read()
-//db operations with fresh data
+//db operates with fresh data
 ```
 
 ---
 #### .save()
 Save changes to the database.  
-StormDB works with a copy of the orignial data so changes have to be manually saved to the actual database file.
+StormDB works with a copy of the orignial data, so changes have to be manually saved to the actual database file.
 
 **Examples:**
 ```js
 //db operations
 DB.save()
 ```
-*Save right after operations*
+*Save right after operations:*
 ```js
 //before: {"name" : "Tom"}
 DB.get("name").set("Gam").save()
@@ -244,7 +292,7 @@ DB.get("name").set("Gam").save()
 ### String operations
 ---
 #### .toLowerCase()
-Makes output lowercased
+Makes output lowercased.
 
 **Example:**
 ```js
@@ -255,7 +303,7 @@ DB.get("message").toLowerCase().value()
 
 ---
 #### .toUpperCase()
-Makes output uppercased
+Makes output uppercased.
 
 **Example:**
 ```js
@@ -273,9 +321,9 @@ Converts target property to string.
 | method | string | yes | "json", "join", any | any |
 | save | boolean | yes | boolean | false |
 
-- The  method parameter is used for chosing a way of conversion to string of arrays.  There are 2 preset ways: `json` and `join` or any other string you like. The array will be joined using that string.
+- The method parameter is used for choosing a way of conversion to string of arrays. There are 2 preset ways: `json` and `join` or any other string you like. The array will be joined using that string.
 
-- The save parameter determines if the result will be pushed to the database or returned. By the fault save is false (returns value, dosen't save)
+- The save parameter determines if the result will be pushed to the database or returned. By default save is false (returns value, dosen't save).
 
 **Examples:**
 *Number to string:*
@@ -283,7 +331,7 @@ Converts target property to string.
 //before: {"age": 19}
 let result = DB.get("age").toString()
 //after: {"age": 19} <- still number
-// result = "19"
+//result = "19"
 ```
 *Pushing result to database:*
 ```js
@@ -306,7 +354,7 @@ DB.get("cake").toString(" \n ") //returns "Milk Bucket \n Sugar \n Egg \n Wheat"
 DB.get("cake").toString("join") //returns "Milk BucketSugarEggWheat"
 DB.get("cake").toString("json") //returns ["Milk Bucket", "Sugar", "Egg", "Wheat"]
 ```
-*Object to string*
+*Object to string:*
 ```js
 //in DB: {user: {"name" : "Gam"}}
 DB.get("user").toString() //returns "{name : 'Gam'}"
@@ -314,7 +362,7 @@ DB.get("user").toString() //returns "{name : 'Gam'}"
 
 ---
 #### .trim()
-Removes whitespace from both ends of a string
+Removes whitespace from both ends of a string.
 
 **Example:**
 ```js
@@ -325,7 +373,7 @@ DB.get("message").trim().value()
 
 ---
 #### .replace(oldStr, newStr)
-Results in a string with some or all matches of a pattern replaced
+Results in a string with some or all matches of a pattern replaced.
 
 | Parameter  | Type | Optional |
 | :-----------: | :----: | :--------: |
@@ -343,7 +391,7 @@ DB.get("messgae").replace("StormDB", "ThunderDB")
 ---
 #### .reverse(save)
 Reverses array or string.  
-Try revercing "racecar"
+Try reversing "racecar".
 
 | Parameter  | Type | Optional | Default |
 | :-----------: | :----: | :--------: | :-------: |
@@ -360,7 +408,7 @@ DB.get("messgae").reverse(save)
 ### Number Operations
 ---
 #### .inc()
-Increaces target property by one.  
+Increases the target property by one.
 
 **Example:**
 ```js
@@ -371,7 +419,7 @@ DB.get("age").inc()
 
 ---
 #### .dec()
-Decreaces target property by one.  
+Decreases the target property by one.  
 
 **Example:**
 ```js
@@ -382,7 +430,7 @@ DB.get("age").dec()
 
 ---
 #### .add(number)
-Adds number to target property.
+Adds a number to target property.
 
 **Example:**
 ```js
@@ -393,7 +441,7 @@ DB.get("inventory").get("coins").add(155)
 
 ---
 #### .sub(number)
-Subtracts number from target property.
+Subtracts a number from target property.
 
 **Example:**
 ```js
@@ -452,9 +500,9 @@ Adds one or more elements to the end of an array.
 
 **Examples:**
 ```js
-//before: {"postions": ["healing", "swiftness"]}
+//before: {"potions": ["healing", "swiftness"]}
 DB.get("potions").push("strength")
-//after: {"postions": ["healing", "swiftness", "strength"]}
+//after: {"potions": ["healing", "swiftness", "strength"]}
 
 //before: {"lotteryNumbers": [6, 26, 42, 20, 53]}
 DB.get("lotteryNumbers").push(31, 7, 12)
@@ -467,19 +515,19 @@ DB.get("lotteryNumbers").push({"name" : "Jhon", "age" : 68})
 
 ---
 #### .pushSet(...value)
-Adds one or more elements to the end of an array **if they arent already in the array**.
+Adds one or more elements to the end of an array **if they aren't already in the array**.
 
 | Parameter  | Type | Optional | Multible |
 | :-----------: | :----: | :--------: | :-------: |
 | ...value | any | No | Yes |
 
-- If you are pushing multible values an one of them is already in the array, only that one will not be pushed.
+- If you are pushing multiple values and one of them is already in the array, only that one will not be pushed.
 
 **Examples:**
 ```js
-//before: {"postions": ["healing", "swiftness"]}
+//before: {"potions": ["healing", "swiftness"]}
 DB.get("potions").push("healing")
-//after: {"postions": ["healing", "swiftness"]}
+//after: {"potions": ["healing", "swiftness"]}
 
 //before: {"lotteryNumbers": [6, 26, 42, 20, 53]}
 DB.get("lotteryNumbers").push(31, 42, 20)
@@ -495,14 +543,14 @@ Removes the last element from an array.
 | getList | boolean | yes | false |
 | save | boolean | yes |  false |
 
-- Setting getList to true will return the pulled value instead of the DB object, you will not be able to call `.save()` if this is true. 
-- The save parameter determines if the result will be pushed to the database or returned. By the fault save is false (returns value, dosen't save)
+- Setting getList to true will return the pulled value instead of the DB object. You will not be able to call `.save()` if this is true. 
+- The save parameter determines if the result will be pushed to the database or returned. By default save is false (returns value, doesn't save).
 
 **Examples:**
 ```js
-//before: {"postions": ["strength", "healing", "swiftness"]}
+//before: {"potions": ["strength", "healing", "swiftness"]}
 DB.get("potions").pull({save: true})
-//after: {"postions": ["strength", "healing"]}
+//after: {"potions": ["strength", "healing"]}
 
 //before: {"lotteryNumbers": [6, 26, 42, 20, 53]}
 let pulledFromList = DB.get("lotteryNumbers").pull({getList: true, save: true})
@@ -512,21 +560,21 @@ let pulledFromList = DB.get("lotteryNumbers").pull({getList: true, save: true})
 
 ---
 #### .shift({getList, save})
-Removes the first element from an array
+Removes the first element from an array.
 
 | Parameter  | Type | Optional | Default |
 | :-----------: | :----: | :--------: |  :-------: |
 | getList | boolean | yes | false |
 | save | boolean | yes |  false |
 
-- Setting getList to true will return the pulled value instead of the DB object, you will not be able to call `.save()` if this is true. 
-- The save parameter determines if the result will be pushed to the database or returned. By the fault save is false (returns value, dosen't save)
+- Setting getList to true will return the pulled value instead of the DB object. You will not be able to call `.save()` if this is true. 
+- The save parameter determines if the result will be pushed to the database or returned. By default save is false (returns value, doesn't save).
 
 **Examples:**
 ```js
-//before: {"postions": ["strength", "healing", "swiftness"]}
-DB.get("potions").shift({save: true})
-//after: {"postions": ["healing", "swiftness"]}
+//before: {"potions": ["strength", "healing", "swiftness"]}
+DB.get("potions").shift({save: strue})
+//after: {"potions": ["healing", "swiftness"]}
 
 //before: {"lotteryNumbers": [6, 26, 42, 20, 53]}
 let shifted = DB.get("lotteryNumbers").shift({getList: true, save: true})
@@ -544,17 +592,17 @@ Adds one or more elements to the beginning of an array.
 
 **Examples:**
 ```js
-//before: {"postions": ["healing", "swiftness"]}
+//before: {"potions": ["healing", "swiftness"]}
 DB.get("potions").unshift("strength")
-//after: {"postions": ["strength", "healing", "swiftness"]}
+//after: {"potions": ["strength", "healing", "swiftness"]}
 
 //before: {"lotteryNumbers": [6, 26, 42, 20, 53]}
 DB.get("lotteryNumbers").unshift(31, 7, 12)
 //after: {"lotteryNumbers": [31, 7, 12, 6, 26, 42, 20, 53]}
 
 //before: {"users": [{"name" : "Gam", "age" : 19}]}
-DB.get("lotteryNumbers").unshift({"name" : "Jhon", "age" : 68})
-//after: {"users": [ {"name" : "Jhon", "age" : 68}, {"name" : "Gam", "age" : 19}]}
+DB.get("lotteryNumbers").unshift({"name" : "John", "age" : 68})
+//after: {"users": [ {"name" : "John", "age" : 68}, {"name" : "Gam", "age" : 19}]}
 ```
 ---
 #### .every(func)
@@ -566,10 +614,10 @@ Tests whether all elements in the array pass the test implemented by the provide
 
 **Example:**
 ```js
-//in DB: {"pkayerScores" : [91, 75, 100, 76, 66, 81, ]}
-console.log(DB.get("pkayerScores").every(el => el > 80)) //prints false
-console.log(DB.get("pkayerScores").every(el => el > 50)) //prints true
-console.log(DB.get("pkayerScores").some(el => el < 50)) //prints false
+//in DB: {"playerScores" : [91, 75, 100, 76, 66, 81, ]}
+console.log(DB.get("playerScores").every(el => el > 80)) //prints false
+console.log(DB.get("playerScores").every(el => el > 50)) //prints true
+console.log(DB.get("playerScores").some(el => el < 50)) //prints false
 ```
 
 ---
@@ -582,10 +630,10 @@ Tests whether at least one element in the array passes the test implemented by t
 
 **Example:**
 ```js
-//in DB: {"pkayerScores" : [91, 75, 100, 76, 66, 81, ]}
-console.log(DB.get("pkayerScores").some(el => el > 80)) //prints true
-console.log(DB.get("pkayerScores").some(el => el > 50)) //prints true
-console.log(DB.get("pkayerScores").some(el => el < 50)) //prints false
+//in DB: {"playerScores" : [91, 75, 100, 76, 66, 81, ]}
+console.log(DB.get("playerScores").some(el => el > 80)) //prints true
+console.log(DB.get("playerScores").some(el => el > 50)) //prints true
+console.log(DB.get("playerScores").some(el => el < 50)) //prints false
 ```
 ---
 #### .has(value)
@@ -635,23 +683,23 @@ Sorts the elements of an array.
 | save | boolean | Yes |  false |
 
 **Examples:**
-*Sorting to variable*
+*Sorting to variable:*
 ```js
-//in DB: {'userScore': [{"Jhon": 5}, {"Gam": 10}, {"Tom": 6}]}
+//in DB: {'userScore': [{"John": 5}, {"Gam": 10}, {"Tom": 6}]}
 let sorted = DB.get("userScore").sort((a, b) => b.value - a.value)
-//sorted = [{"Gam": 10}, {"Tom": 6}, {"Jhon": 5}]
+//sorted = [{"Gam": 10}, {"Tom": 6}, {"John": 5}]
 ```
-*Sorting and saving*
+*Sorting and saving:*
 ```js
-//before: {'userScore': [{"Jhon": 5}, {"Gam": 10}, {"Tom": 6}]}
+//before: {'userScore': [{"John": 5}, {"Gam": 10}, {"Tom": 6}]}
 let sortBy = (a, b) => b.value - a.value
 DB.get("userScore").sort(sortBy , true)
-//after: {'userScore': [{"Gam": 10}, {"Tom": 6}, {"Jhon": 5}]}
+//after: {'userScore': [{"Gam": 10}, {"Tom": 6}, {"John": 5}]}
 ```
 
 ---
 #### .filter(func, save)
-Creates an array with all elements that pass the test implemented by the provided function.
+Creates an array with all elements that pass the test, given by the provided function.
 
 | Parameter  | Type | Optional | Default |
 | :-----------: | :----: | :--------: |  :-------: |
@@ -659,13 +707,13 @@ Creates an array with all elements that pass the test implemented by the provide
 | save | boolean | Yes |  false |
 
 **Examples:**
-*Filtering to variable*
+*Filtering to variable:*
 ```js
 //in DB: {"lotteryNumbers": [6, 26, 42, 20, 53]}
 let filtered = DB.get("lotteryNumbers").filter(i => i >= 40);
 //filtered = [42, 53]
 ```
-*Filtering and saving*
+*Filtering and saving:*
 ```js
 //before: {"lotteryNumbers": [6, 26, 42, 20, 53]}
 DB.get("lotteryNumbers").filter((i => i >= 40), true);
@@ -683,27 +731,27 @@ The first time that the callback is run there is no "return value of the previou
 | save | boolean | Yes |  false |
 
 **Examples:**
-*Reducing to variable*
+*Reducing to variable:*
 ```js
 //in DB: {"gameScores": [30, 15, 40, 25, 50]}
 let reduced = DB.get("gameScores").reduce((acc, e) => acc + e)
 //reduced = 160
 ```
-*Reducing and saving*
+*Reducing and saving:*
 ```js
 //before: {"gameScores": [30, 15, 40, 25, 50]}
 DB.get("gameScores").reduce(((acc, e) => acc + e), true)
 //after: {"gameScores": 160}
 ```
-Now that the it's *score* not *score**s*** you can rename the key using *.rename()* :)
+Now that it's *score* not *score**s***, you can rename the key using *.rename()* :)
 
 ---
 #### .length()
-Returns the number of elements in that array or characters in that string.
+Returns the number of elements or characters in that array or string.
 
 **Example:**
 ```js
-//in DB: {"name" : "Gamriel", "inventory": ["Great Sword", "Mighty Sheild", "Book of Spells"]}
+//in DB: {"name" : "Gamriel", "inventory": ["Great Sword", "Mighty Shield", "Book of Spells"]}
 
 console.log(DB.get("name").length()) //prints 7
 console.log(DB.get("inventory").length()) //prints 3
@@ -713,7 +761,7 @@ console.log(DB.get("inventory").length()) //prints 3
 ### Object Operations
 ---
 #### .concat(newValue)
-Combine/concatonate select property with a new value.
+Combine/concatenate the selected property with a new value.
 
 | Parameter  | Type | Optional |
 | :-----------: | :----: | :--------: |
@@ -728,9 +776,9 @@ DB.get("name").concat("rion")
 ```
 *Combining arrays:*
 ```js
-//before: {"inventory": ["Great Sword", Holy Sheild]}
+//before: {"inventory": ["Great Sword", Holy Shield]}
 DB.get("inventory").concat(["Swift Boots", "Ruby Ring", "Health Potion" ])
-//after: {"inventory": ["Great Sword", Holy Sheild, "Swift Boots", "Ruby Ring", "Health Potion" ]}
+//after: {"inventory": ["Great Sword", Holy Shield, "Swift Boots", "Ruby Ring", "Health Potion" ]}
 ```
 *Combining objects:*
 ```js
@@ -738,10 +786,10 @@ DB.get("inventory").concat(["Swift Boots", "Ruby Ring", "Health Potion" ])
 DB.get("user").concat({"age": 19})
 //after: {"user" : {"name": "Gam", "age": 19}}
 ```
-*Combinging array to string:*
+*Combining array to string:*
 ```js
-//before: {"loteryResults" : [33, 50, 42, 4, 12, 9]}
-DB.get("loteryResults").toString(", ", true).concat(" are the winning numbers!")
+//before: {"lotteryResults" : [33, 50, 42, 4, 12, 9]}
+DB.get("lotteryResults").toString(", ", true).concat(" are the winning numbers!")
 //after: {"lotteryResults" : "33, 50, 42, 4, 12, 9 are the winning numbers!"}
 
 DB.get("lotteryResults").rename("announcement")
@@ -750,7 +798,7 @@ DB.get("lotteryResults").rename("announcement")
 
 ---
 ## Async Saving
-To avoid blocking the event loop when saving the a StormDB database it is recommended you enable the async option on the engine. Async isn't necessary when not creating a web server, saving the StormDB database is synchronous by default.
+To avoid blocking the event loop when saving the StormDB database it is recommended you enable the async option on the engine. Async isn't necessary when not creating a web server, saving the StormDB database is synchronous by default.
 
 ```js
 // start async local file engine
@@ -758,7 +806,7 @@ const engine = new StormDB.Engine("./data.json", {
   async: true
 });
 ```
-Saving becomes a promisse.
+Saving becomes a promise.
 ```js
 // asynchronous database save
 db.save().then(() => console.log("Finished Saving Database!"));
@@ -768,39 +816,39 @@ db.save().then(() => console.log("Finished Saving Database!"));
 
 #### Changes
 
-- added `read()`, `inc()`, `dec()`, `add()`, `sub()`, `addRanom()`, `subRandom()`, `rename()`, `toLowerCase()`, `toUpperCase()`, `toString()`, `trim()`, `replace()`, `reverse()`, `pushSet()`, `pull()`, `shift()`, `unshift()`, `every()`, `has()`, `length()` and `concat()`
+- added `read()`, `inc()`, `dec()`, `add()`, `sub()`, `addRanom()`, `subRandom()`, `rename()`, `toLowerCase()`, `toUpperCase()`, `toString()`, `trim()`, `replace()`, `reverse()`, `pushSet()`, `pull()`, `shift()`, `unshift()`, `every()`, `has()`, `length()` and `concat()`;
 
-- updated `delete()`, `push()`, `map()`, `sort()`, `filter()`, `reduce()`
+- updated `delete()`, `push()`, `map()`, `sort()`, `filter()`, `reduce()`;
 
-- changed file structure, split groups in seperate files for better management
+- changed file structure, split groups in seperate files for better management;
 
-- removed serialization
+- removed serialization.
 
 ---
-#### Disguarded ideas
+#### Discarded ideas
 
-- `greaterThan()`, `lesserThan()`, `notEqualTo()`, `min()` and `max()` - These were supposed to be number methods to search in arrays but then i remmebered `filter()` does exactly that.
+- `greaterThan()`, `lesserThan()`, `notEqualTo()`, `min()` and `max()` - These were supposed to be number methods to search in arrays, but then I remembered that `filter()` does the same job.
 
-- `findIndex()` - i just coudnt imagine how this would be useful.
+- `findIndex()` - I just coudn't imagine how this would be useful.
 
-- `addDate()` and `date()` were supposed to add dates to objects in a database but simply `DB.set("date", new Date())` did the same work.
+- `addDate()` and `date()` - They were supposed to add dates to objects in a database, but `DB.set("date", new Date())` did the same work.
 
-- `comment()`, similar to date, it was supposed to add comments for the developers in the database but the devs could simply open the database and insert their comments that way or do `DB.set("comment", "This is a comment.")`.
+- `comment()` - Similar to date, it was supposed to add comments for the developers in the database, but the devs could open the database and insert their comments that way or do `DB.set("comment", "This is a comment.")`.
 
-- `keys()` was supposed to return all the keys in the target object, simply `Object.keys(DB.value())` would do the same.
+- `keys()` - It was supposed to return all the keys in the target object, but `Object.keys(DB.value())` would do the same.
 
-- `update()` was a cool idea, it was supposed to do something for each element of an array, then i realized this was just `map()`.
+- `update()` - It was a cool idea, it was supposed to do something for each element of an array, then I realized this was just `map()`.
 
 ---
 #### Why?
 
 At first i just needed a database manager that looked nice in code and could refresh at any time.
-**StormDB** looked nice but i coudnt refresh it the way i wanted to.  
-After a while i tried to my my own solution and that lead to me looking at the source code. I made `read()` and went on with my buisness. After that i started using **StormDB** but some stuff like adding 1 to a number was just not convinient.  
-Already having experiance with the code i decided to put another method in there - `inc()`. After this i began wondering what other way i can imporve it and that lead me to make the number group then the array, string and object groups.  
-With so many chances i decided to call it something else - **ThunderDB** and so that's how i ended up writing a documentation for a ThunderDB.
+**StormDB** looked nice but i couldn't refresh it the way i wanted to.  
+After a while i tried to make my own solution and that lead to me looking at the source code. I made `read()` and went on with my buisness. After that I started using **StormDB**, but some stuff like adding 1 to a number was just not convenient.  
+Already having experience with the code, I decided to put another method in there - `inc()`. After this I began wondering what other way I can imporve it and that lead me to make the number group then the array, string and object groups.  
+With so many chances I decided to call it something else - **ThunderDB** and so that's how I ended up writing a documentation for a ThunderDB.
 
-I really hope the original creator dosent copystrike me or something for publishing this to GitHub, all the links to his **StormDB** are below as well as his page and the original license.
+I really hope the original creator doesn't copystrike me or something for publishing this to GitHub, all the links to his **StormDB** are below as well as his page and the original license.
 
 # Links, Credit and License
 **StormDB**: [GitHub](https://github.com/TomPrograms/stormdb)
