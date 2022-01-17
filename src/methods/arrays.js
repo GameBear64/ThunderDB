@@ -84,11 +84,16 @@ module.exports = {
   has(value) {
     let list = this.value();
 
-    if (!Array.isArray(list)) throw new Error("You can only check arrays.");
+    if (!Array.isArray(list) || list === Object(list)) 
 
-    let boolean = list.includes(value);
+    if (Array.isArray(list)) {
+      return list.includes(value);
 
-    return boolean;
+    } else if (list === Object(list)) {
+      return Object.keys(list).includes(value)
+
+    } else throw new Error("You can only check arrays or objects.");
+    
   },
   map(func, save = false) {
     let list = this.value();

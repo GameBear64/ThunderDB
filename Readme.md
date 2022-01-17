@@ -13,50 +13,50 @@ I needed something similar to it, but not quite the same, so here is Thunder.
   * [Usage](#usage)
   * [Database Operations](#database-operations)
     + [Core operations](#core-operations)
-      - [.default(defaultValue)](#default-defaultvalue-)
-      - [.value()](#value--)
-      - [.get(value)](#get-value-)
-      - [.set(key, value)](#set-key--value-)
-      - [.rename(newName)](#rename-newname-)
-      - [.delete()](#delete--)
-      - [.read()](#read--)
-      - [.save()](#save--)
+      - [.default(defaultValue)](#defaultdefaultvalue)
+      - [.value()](#value)
+      - [.get(value)](#getvalue)
+      - [.set(key, value)](#setkey-value)
+      - [.rename(newName)](#renamenewname)
+      - [.delete()](#delete)
+      - [.read()](#read)
+      - [.save()](#save)
     + [String operations](#string-operations)
-      - [.toLowerCase()](#tolowercase--)
-      - [.toUpperCase()](#touppercase--)
-      - [.toString(method, save)](#tostring-method--save-)
-      - [.trim()](#trim--)
-      - [.replace(oldStr, newStr)](#replace-oldstr--newstr-)
-      - [.reverse(save)](#reverse-save-)
+      - [.toLowerCase()](#tolowercase)
+      - [.toUpperCase()](#touppercase)
+      - [.toString(method, save)](#tostringmethod-save)
+      - [.trim()](#trim)
+      - [.replace(oldStr, newStr)](#replaceoldstr-newstr)
+      - [.reverse(save)](#reversesave)
     + [Number Operations](#number-operations)
-      - [.inc()](#inc--)
-      - [.dec()](#dec--)
-      - [.add(number)](#add-number-)
-      - [.sub(number)](#sub-number-)
-      - [.addRandom(max, min)](#addrandom-max--min-)
-      - [.subRandom(max, min)](#subrandom-max--min-)
+      - [.inc()](#inc)
+      - [.dec()](#dec)
+      - [.add(number)](#addnumber)
+      - [.sub(number)](#subnumber)
+      - [.addRandom(max, min)](#addrandommax-min)
+      - [.subRandom(max, min)](#subrandommax-min)
     + [Array Operations](#array-operations)
-      - [.push(...value)](#push-value-)
-      - [.pushSet(...value)](#pushset-value-)
-      - [.pull({getList, save})](#pull--getlist--save--)
-      - [.shift({getList, save})](#shift--getlist--save--)
-      - [.unshift(...value)](#unshift-value-)
-      - [.every(func)](#every-func-)
-      - [.some(func)](#some-func-)
-      - [.has(value)](#has-value-)
-      - [.map(func, save)](#map-func--save-)
-      - [.sort(func, save)](#sort-func--save-)
-      - [.filter(func, save)](#filter-func--save-)
-      - [.reduce(func, save)](#reduce-func--save-)
-      - [.length()](#length--)
+      - [.push(...value)](#pushvalue)
+      - [.pushSet(...value)](#pushsetvalue)
+      - [.pull({getList, save})](#pullgetlist-save)
+      - [.shift({getList, save})](#shiftgetlist-save)
+      - [.unshift(...value)](#unshiftvalue)
+      - [.every(func)](#everyfunc)
+      - [.some(func)](#somefunc)
+      - [.has(value)](#hasvalue)
+      - [.map(func, save)](#mapfunc-save)
+      - [.sort(func, save)](#sortfunc-save)
+      - [.filter(func, save)](#filterfunc-save)
+      - [.reduce(func, save)](#reducefunc-save)
+      - [.length()](#length)
     + [Object Operations](#object-operations)
-      - [.concat(newValue)](#concat-newvalue-)
+      - [.concat(newValue)](#concatnewvalue)
   * [Async Saving](#async-saving)
   * [What and Why](#what-and-why)
       - [Changes](#changes)
-      - [Disguarded ideas](#disguarded-ideas)
-      - [Why?](#why-)
-- [Links, Credit and License](#links--credit-and-license)
+      - [Discarded ideas](#discarded-ideas)
+      - [Why?](#why)
+- [Links, Credit and License](#links-credit-and-license)
 
 ## Installation
 **I'm not posting this to npm, so just copy and paste the files here into your *node_modules*  folder.**
@@ -637,17 +637,24 @@ console.log(DB.get("playerScores").some(el => el < 50)) //prints false
 ```
 ---
 #### .has(value)
-Determines whether an array includes a certain value among its entries.
+Determines whether an array or object includes a certain value among its entries.
 
 | Parameter  | Type | Optional |
 | :-----------: | :----: | :--------: |
-| ...value | any | No |
+| value | any | No |
 
-**Example:**
+**Examples:**
+*Testing array*
 ```js
 //in DB: {"guildMembers" : ["Tom", "Gam", "Jhon", "Kate"]}
 console.log(DB.get("guildMembers").has("Gam")) //prints true
 console.log(DB.get("guildMembers").has("Gamrion")) //prints false
+```
+*Testing object*
+```js
+//in DB: {'userScore': {"Gam": 10, "Tom": 6, "John": 5}}
+console.log(DB.get("userScore").has("Gam")) //prints true
+console.log(DB.get("userScore").has("Gamrion")) //prints false
 ```
 
 ---
