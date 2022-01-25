@@ -14,18 +14,16 @@ module.exports = {
 
     if (!Array.isArray(list)) throw new Error("You can only push to arrays.");
 
-    let hadDuplicates = []
     let newList = Array.from(value)
     value.forEach(el => {
       if (list.includes(el)) {
-        hadDuplicates = newList.shift()
+        newList.shift()
       }
     });
 
     list.push(...newList);
     this.set(list);
 
-    if (hadDuplicates) return hadDuplicates
     return this;
   },
   pull(/*amount,*/ {getList = false, save = false}) {

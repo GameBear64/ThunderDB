@@ -32,6 +32,9 @@ module.exports = class Engine {
   }
 
   write(data) {
+    if (Object.keys(data).length == 0) {
+      throw new Error("Will not overwrite with null data, saving skipped...");
+    }
     // if async, return promise wrapper around async writefile
     if (this.async) {
       return new Promise(
