@@ -37,14 +37,7 @@ module.exports = class Engine {
     }
     // if async, return promise wrapper around async writefile
     if (this.async) {
-      return new Promise(
-        function (resolve, reject) {
-          fs.writeFile(this.path, JSON.stringify(data, null, 2), function (error) {
-            if (error) return reject(error);
-            else resolve();
-          });
-        }.bind(this)
-      );
+      return fs.promises.writeFile(this.path, JSON.stringify(data, null, 2))
     }
 
     fs.writeFileSync(this.path, JSON.stringify(data, null, 2));
